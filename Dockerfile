@@ -7,6 +7,7 @@ RUN true \
     && apt-get install -y \
         git \
         perl \
+        libnet-ssleay-perl \
     && apt-get clean
 
 WORKDIR /
