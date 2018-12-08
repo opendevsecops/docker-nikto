@@ -1,19 +1,20 @@
-FROM ubuntu:latest
+FROM opendevsecops/launcher:latest as launcher
 
-ENV DEBIAN_FRONTEND noninteractive
+# ---
+
+FROM alpine:latest
+
+WORKDIR /run
 
 RUN true \
-    && apt-get update \
-    && apt-get install -y \
+    && apk --no-cache add \
         git \
-        perl \
-        libnet-ssleay-perl \
-    && apt-get clean
+		perl \
+		perl-net-ssleay
 
-WORKDIR /
+RUN true \
+    && git clone https://github.com/sullo/nikto.git
 
-RUN git clone https://github.com/sullo/nikto.git
+COPY --from=launcher /bin/launcher /bin/launcher
 
-ENTRYPOINT ["/nikto/program/nikto.pl"]
-
-CMD ["-Help"]
+ENTRYPOINT ["/bin/launcher", "/usr/bin/perl", "/run/nikto/program/nikto.pl"]
