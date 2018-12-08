@@ -25,6 +25,7 @@ RUN true \
 		perl-net-ssleay
 
 COPY --from=build /build/nikto /run/nikto
+
 COPY --from=launcher /bin/launcher /bin/launcher
 
 WORKDIR /session
